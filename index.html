@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweetella Sweeties | B2B Premium Brownies untuk Coffee Shop</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sweet-dark': '#3E2723',
+                        'sweet-brown': '#5D4037',
+                        'sweet-gold': '#D4A373',
+                        'sweet-gold-hover': '#C08D5D',
+                        'sweet-cream': '#FAEDCD',
+                        'sweet-light': '#FEFAE0',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Animasi scroll fade-in */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-overlay {
+            background: linear-gradient(to right, rgba(62, 39, 35, 0.9) 0%, rgba(62, 39, 35, 0.6) 100%);
+        }
+
+        /* --- ANIMASI NAVBAR BARU --- */
+        .nav-link {
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+        /* Membuat bentuk pill tersembunyi di belakang teks */
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: #D4A373; /* Warna sweet-gold */
+            border-radius: 9999px; /* Membulat sempurna */
+            z-index: -1;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Memunculkan animasi saat di-hover */
+        .nav-link:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Image Slider Styles */
+        .slider-container { position: relative; width: 100%; height: 100%; overflow: hidden; }
+        .slider-wrapper { display: flex; transition: transform 0.4s ease-in-out; height: 100%; }
+        .slider-slide { min-width: 100%; height: 100%; object-fit: cover; }
+        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.8); color: #3E2723; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; opacity: 0; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .slider-container:hover .slider-btn { opacity: 1; }
+        .slider-btn:hover { background: #D4A373; color: white; }
+        .slider-btn-prev { left: 10px; }
+        .slider-btn-next { right: 10px; }
+        .slider-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; }
+        .slider-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.6); cursor: pointer; transition: background 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+        .slider-dot.active { background: #D4A373; transform: scale(1.2); }
+
+        /* Floating WhatsApp Button Styles */
+        .floating-wa-btn {
+            position: fixed; bottom: 30px; right: 30px; background-color: #00A859; color: white;
+            padding: 16px; border-radius: 50px; display: flex; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); overflow: hidden;
+        }
+        .floating-wa-btn:hover { background-color: #008f4c; padding: 16px 28px 16px 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .floating-wa-btn i { font-size: 1.8rem; line-height: 1; transition: transform 0.3s ease; }
+        .floating-wa-btn:hover i { transform: scale(1.1); }
+        .floating-wa-btn span { font-size: 1.1rem; font-weight: 700; white-space: nowrap; max-width: 0; opacity: 0; margin-left: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        .floating-wa-btn:hover span { max-width: 250px; opacity: 1; margin-left: 12px; }
+        @media (max-width: 640px) {
+            .floating-wa-btn { bottom: 20px; right: 20px; padding: 16px; }
+            .floating-wa-btn span { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-sweet-light text-gray-800 font-sans antialiased selection:bg-sweet-gold selection:text-white">
+
+    <!-- NAVBAR BARU: Model Floating Pill dengan warna cokelat gelap permanen -->
+    <nav class="fixed w-full z-50 top-4 px-4 md:px-8 flex justify-center pointer-events-none">
+        <div class="bg-sweet-dark w-full max-w-7xl rounded-full px-3 py-2 flex justify-between items-center shadow-2xl border border-sweet-gold/20 pointer-events-auto">
+            
+            <!-- Area Logo -->
+            <a href="#" class="flex items-center gap-3 flex-shrink-0 drop-shadow-md pl-1 md:pl-2">
+                <!-- Fallback ke placeholder jika logo-asli.png belum ada -->
+                <img src="gambarasset/Gambar1Logo.png" onerror="this.src='https://placehold.co/100x100/D4A373/FFFFFF?text=Logo&font=playfair'" alt="Logo Sweetella" class="w-10 h-10 md:w-12 md:h-12 rounded-full">
+                <span class="text-lg md:text-2xl font-serif font-bold text-white tracking-wide">Sweetella<span class="text-sweet-gold">Sweeties</span></span>
+            </a>
+
+            <!-- Menu Desktop -->
+            <div class="hidden lg:flex items-center gap-1 xl:gap-2 pr-2">
+                <!-- Menggunakan class nav-link untuk animasi smooth -->
+                <a href="#mengapa-kami" class="nav-link text-white font-medium px-4 py-2.5 rounded-full drop-shadow-md">Mengapa Kami?</a>
+                <a href="#katalog" class="nav-link text-white font-medium px-4 py-2.5 rounded-full drop-shadow-md">Katalog</a>
+                <a href="#keuntungan" class="nav-link text-white font-medium px-4 py-2.5 rounded-full drop-shadow-md">Keuntungan</a>
+                <a href="#kemitraan" class="nav-link text-white font-medium px-4 py-2.5 rounded-full drop-shadow-md">Kemitraan</a>
+                <a href="#ulasan" class="nav-link text-white font-medium px-4 py-2.5 rounded-full drop-shadow-md">Ulasan</a>
+                
+                <!-- Tombol Hubungi Kami (Berada di dalam struktur nav, tapi secara visual terpisah di ujung) -->
+                <a href="#kontak" class="bg-sweet-gold text-white font-bold px-6 py-2.5 rounded-full shadow-md hover:bg-sweet-gold-hover transition-colors ml-2 drop-shadow-md">Hubungi Kami</a>
+            </div>
+
+            <!-- Tombol Mobile -->
+            <button class="lg:hidden text-white p-2 pr-4 focus:outline-none drop-shadow-md" id="mobile-menu-btn">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Menu Mobile -->
+        <div id="mobile-menu" class="hidden absolute top-[110%] left-4 right-4 bg-sweet-dark rounded-2xl shadow-2xl border border-sweet-gold/20 overflow-hidden lg:hidden pointer-events-auto">
+            <div class="flex flex-col p-4 space-y-2">
+                <a href="#mengapa-kami" class="text-white hover:bg-sweet-gold/20 px-4 py-3 rounded-xl transition">Mengapa Kami?</a>
+                <a href="#katalog" class="text-white hover:bg-sweet-gold/20 px-4 py-3 rounded-xl transition">Katalog</a>
+                <a href="#keuntungan" class="text-white hover:bg-sweet-gold/20 px-4 py-3 rounded-xl transition">Keuntungan</a>
+                <a href="#kemitraan" class="text-white hover:bg-sweet-gold/20 px-4 py-3 rounded-xl transition">Kemitraan</a>
+                <a href="#ulasan" class="text-white hover:bg-sweet-gold/20 px-4 py-3 rounded-xl transition">Ulasan</a>
+                <a href="#kontak" class="bg-sweet-gold text-white px-4 py-3 rounded-xl font-bold text-center mt-2 shadow-md">Hubungi Kami</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative min-h-screen flex items-center justify-center pt-20">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=2000&auto=format&fit=crop" alt="Premium Brownies and Coffee" class="w-full h-full object-cover object-center" />
+            <div class="absolute inset-0 hero-overlay"></div>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 text-center md:text-left flex flex-col md:flex-row items-center w-full">
+            <div class="w-full md:w-2/3 lg:w-3/5 fade-in-up appear">
+                <span class="text-sweet-gold font-semibold tracking-wider uppercase text-sm mb-4 block">B2B Pastry Partner</span>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight mb-6">
+                    Lengkapi Sajian Kopi Anda dengan <span class="text-sweet-gold italic">Brownies Premium</span> Kami.
+                </h1>
+                <p class="text-gray-200 text-lg md:text-xl mb-10 leading-relaxed max-w-2xl">
+                    Mitra supply pastry terpercaya untuk coffee shop. Tingkatkan margin keuntungan bisnis Anda dengan produk berkualitas tinggi, rasa yang konsisten, dan harga spesial khusus mitra B2B.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="#kontak" class="bg-sweet-gold hover:bg-sweet-gold-hover text-white font-medium py-3 px-8 rounded-full transition transform hover:-translate-y-1 shadow-lg text-center">
+                        Minta Sampel Gratis
+                    </a>
+                    <a href="#kemitraan" class="bg-transparent border border-white text-white hover:bg-white hover:text-sweet-dark font-medium py-3 px-8 rounded-full transition transform hover:-translate-y-1 text-center">
+                        Lihat Penawaran B2B
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="mengapa-kami" class="py-24 bg-sweet-light">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="w-full lg:w-1/2 relative fade-in-up">
+                    <div class="absolute inset-0 bg-sweet-gold rounded-2xl transform translate-x-4 translate-y-4"></div>
+                    <img src="gambarasset/Gambarprofile.png" alt="Coffee Shop Environment" class="relative z-10 w-full h-auto rounded-2xl shadow-xl object-cover" />
+                </div>
+                <div class="w-full lg:w-1/2 fade-in-up">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-sweet-dark mb-6 leading-tight">
+                        Mengapa Coffee Shop Anda Membutuhkan Brownies Kami?
+                    </h2>
+                    <div class="w-20 h-1 bg-sweet-gold mb-8"></div>
+                    <p class="text-gray-700 text-lg mb-6 leading-relaxed">
+                        Secangkir kopi yang hebat membutuhkan pendamping yang sempurna. Kami memahami bahwa pemilik coffee shop membutuhkan pastry yang tidak hanya lezat, tetapi juga <strong class="text-sweet-dark">konsisten, mudah disajikan, dan memiliki nilai jual yang menguntungkan.</strong>
+                    </p>
+                    <p class="text-gray-700 text-lg leading-relaxed">
+                        Kami hadir sebagai solusi supply chain Anda. Fokuslah pada menyeduh kopi terbaik, dan biarkan kami yang menyediakan brownies premium untuk memanjakan pelanggan Anda.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="visi-misi" class="py-20 bg-sweet-dark text-white">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold text-sweet-gold mb-12">Visi & Misi Kami</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+                <div class="bg-sweet-brown/30 p-8 rounded-2xl border border-sweet-gold/20 fade-in-up">
+                    <div class="w-12 h-12 bg-sweet-gold rounded-full flex items-center justify-center text-sweet-dark text-xl mb-6 shadow-lg">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-serif">Visi</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Menjadi mitra penyedia pastry B2B terkemuka dan terpercaya di Indonesia, yang dikenal karena kualitas premium, konsistensi rasa, serta kontribusi nyata dalam meningkatkan nilai jual bisnis F&B mitra kami.
+                    </p>
+                </div>
+                <div class="bg-sweet-brown/30 p-8 rounded-2xl border border-sweet-gold/20 fade-in-up delay-100">
+                    <div class="w-12 h-12 bg-sweet-gold rounded-full flex items-center justify-center text-sweet-dark text-xl mb-6 shadow-lg">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-serif">Misi</h3>
+                    <ul class="text-gray-300 leading-relaxed space-y-3 list-disc list-inside">
+                        <li>Menyediakan produk brownies berkualitas dengan bahan baku premium yang terkurasi.</li>
+                        <li>Memberikan layanan kemitraan yang transparan, fleksibel, dan saling menguntungkan.</li>
+                        <li>Memastikan standar produksi yang higienis dan konsisten di setiap batch.</li>
+                        <li>Membantu UMKM dan Coffee shop menciptakan variasi menu dessert yang menarik dan bernilai jual.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="katalog" class="py-24 bg-sweet-cream">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 text-center">
+            <div class="fade-in-up mb-16">
+                <span class="text-sweet-gold font-semibold tracking-wider uppercase text-sm mb-2 block">Katalog Produk</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-sweet-dark mb-4">Varian yang Disesuaikan untuk Etalase Anda</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Kami merancang ukuran brownies agar sangat fleksibel untuk berbagai strategi penjualan—mulai dari bundling menu kopi hingga menu penutup utama.</p>
+            </div>
+
+            <!-- PERUBAHAN DI SINI: Mengubah grid menjadi 3 kolom (lg:grid-cols-3) dan memusatkan (justify-center) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center max-w-5xl mx-auto">
+                <!-- Produk 1 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 fade-in-up text-left flex flex-col">
+                    <div class="aspect-[4/5] bg-gray-200 relative slider-container" data-slide-index="0">
+                        <div class="slider-wrapper">
+                            <img src="gambarasset/Gambar3a.png" alt="Bite Size 1" class="slider-slide">
+                            <img src="gambarasset/Gambar3b.png" alt="Bite Size 2" class="slider-slide">
+                            <img src="gambarasset/Gambar3c.png" alt="Bite Size 3" class="slider-slide">
+                            <img src="gambarasset/Gambar3d.png" alt="Bite Size 4" class="slider-slide">
+                            <img src="gambarasset/Gambar3e.png" alt="Bite Size 5" class="slider-slide">
+                            <img src="gambarasset/Gambar3f.png" alt="Bite Size 6" class="slider-slide">
+                        </div>
+                        <button class="slider-btn slider-btn-prev" onclick="moveSlide(this, -1)"><i class="fas fa-chevron-left text-sm"></i></button>
+                        <button class="slider-btn slider-btn-next" onclick="moveSlide(this, 1)"><i class="fas fa-chevron-right text-sm"></i></button>
+                        <div class="absolute top-4 right-4 bg-white/90 px-3 py-1 rounded-full text-xs font-bold text-sweet-dark z-20">5x5 cm</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-xl font-serif font-bold text-sweet-dark mb-3">Bite Size (5x5cm)</h3>
+                        <div class="mb-4"><span class="text-xs font-semibold text-sweet-gold uppercase tracking-wider block mb-1">Cocok Untuk:</span><p class="text-gray-700 text-sm">Snack box, suguhan rapat, atau pelengkap kopi harian di kafe.</p></div>
+                        <div class="mt-auto"><span class="text-xs font-semibold text-sweet-gold uppercase tracking-wider block mb-1">Topping:</span><p class="text-gray-600 text-sm">Almond, Redvevlet with Silverqueen, Keju, Choco Chips, Kacang, dan Original. (Made By Request)</p></div>
+                    </div>
+                </div>
+
+                <!-- Produk 2 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 fade-in-up text-left flex flex-col delay-100">
+                    <div class="aspect-[4/5] bg-gray-200 relative slider-container" data-slide-index="0">
+                        <div class="slider-wrapper">
+                            <img src="gambarasset/Gmbar2a.png" alt="Medium Slice 1" class="slider-slide">
+                            <img src="gambarasset/Gmbar2b.png" alt="Medium Slice 2" class="slider-slide">
+                            <img src="gambarasset/Gmbar2c.png" alt="Medium Slice 3" class="slider-slide">
+                            <img src="gambarasset/Gmbar2d.png" alt="Medium Slice 4" class="slider-slide">
+                            <img src="gambarasset/Gmbar2e.png" alt="Medium Slice 5" class="slider-slide">
+                        </div>
+                        <button class="slider-btn slider-btn-prev" onclick="moveSlide(this, -1)"><i class="fas fa-chevron-left text-sm"></i></button>
+                        <button class="slider-btn slider-btn-next" onclick="moveSlide(this, 1)"><i class="fas fa-chevron-right text-sm"></i></button>
+                        <div class="absolute top-4 right-4 bg-sweet-gold px-3 py-1 rounded-full text-xs font-bold text-white shadow-md z-20">Best Seller</div>
+                        <div class="absolute bottom-4 right-4 bg-white/90 px-3 py-1 rounded-full text-xs font-bold text-sweet-dark z-20">5x10 cm</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-xl font-serif font-bold text-sweet-dark mb-3">Medium Slice (5x10cm)</h3>
+                        <div class="mb-4"><span class="text-xs font-semibold text-sweet-gold uppercase tracking-wider block mb-1">Cocok Untuk:</span><p class="text-gray-700 text-sm">Ukuran personal yang pas untuk dessert kafe atau bingkisan mini.</p></div>
+                        <div class="mt-auto"><span class="text-xs font-semibold text-sweet-gold uppercase tracking-wider block mb-1">Topping:</span><p class="text-gray-600 text-sm">Almond, Original, Choco Chips, Kacang, dan Keju. (Made By Request)</p></div>
+                    </div>
+                </div>
+
+                <!-- Produk 3 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 fade-in-up text-left flex flex-col delay-200">
+                    <div class="aspect-[4/5] bg-gray-200 relative slider-container" data-slide-index="0">
+                        <div class="slider-wrapper">
+                            <img src="gambarasset/Gambar1a.png" alt="Signature Portion 1" class="slider-slide">
+                            <img src="gambarasset/Gambar1b.png" alt="Signature Portion 2" class="slider-slide">
+                            <img src="gambarasset/Gambar1d.png" alt="Signature Portion 3" class="slider-slide">
+                            <img src="gambarasset/Gambar1e.png" alt="Signature Portion 4" class="slider-slide">
+                        </div>
+                        <button class="slider-btn slider-btn-prev" onclick="moveSlide(this, -1)"><i class="fas fa-chevron-left text-sm"></i></button>
+                        <button class="slider-btn slider-btn-next" onclick="moveSlide(this, 1)"><i class="fas fa-chevron-right text-sm"></i></button>
+                        <div class="absolute top-4 right-4 bg-white/90 px-3 py-1 rounded-full text-xs font-bold text-sweet-dark z-20">10x10 cm</div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-xl font-serif font-bold text-sweet-dark mb-3">Signature Portion (10x10cm)</h3>
+                        <div class="mb-4"><span class="text-xs font-semibold text-sweet-gold uppercase tracking-wider block mb-1">Cocok Untuk:</span><p class="text-gray-700 text-sm">Porsi sharing atau hadiah (hampers) berukuran sedang.</p></div>
+                        <div class="mt-auto"><span class="text-xs font-semibold text-sweet-gold uppercase tracking-wider block mb-1">Topping:</span><p class="text-gray-600 text-sm">Almond, Original, Choco Chips, Kacang, dan Keju. (Made By Request)</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="keuntungan" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-sweet-dark mb-4">Mengapa Bermitra Bersama Kami?</h2>
+                <div class="w-20 h-1 bg-sweet-gold mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                <div class="flex gap-6 fade-in-up"><div class="flex-shrink-0 w-16 h-16 rounded-full bg-sweet-cream flex items-center justify-center text-sweet-gold text-2xl"><i class="fas fa-tags"></i></div><div><h3 class="text-xl font-bold text-sweet-dark mb-2">Harga Spesial B2B (Grosir)</h3><p class="text-gray-600">Struktur harga berjenjang khusus mitra, memastikan margin keuntungan optimal.</p></div></div>
+                <div class="flex gap-6 fade-in-up delay-100"><div class="flex-shrink-0 w-16 h-16 rounded-full bg-sweet-cream flex items-center justify-center text-sweet-gold text-2xl"><i class="fas fa-star"></i></div><div><h3 class="text-xl font-bold text-sweet-dark mb-2">Kualitas & Rasa Konsisten</h3><p class="text-gray-600">Dibuat dengan cokelat premium dan standar dapur profesional yang ketat.</p></div></div>
+                <div class="flex gap-6 fade-in-up delay-200"><div class="flex-shrink-0 w-16 h-16 rounded-full bg-sweet-cream flex items-center justify-center text-sweet-gold text-2xl"><i class="fas fa-truck"></i></div><div><h3 class="text-xl font-bold text-sweet-dark mb-2">Pengiriman Terjadwal</h3><p class="text-gray-600">Layanan antar terjadwal memastikan produk tiba dalam kondisi sempurna.</p></div></div>
+                <div class="flex gap-6 fade-in-up delay-300"><div class="flex-shrink-0 w-16 h-16 rounded-full bg-sweet-cream flex items-center justify-center text-sweet-gold text-2xl"><i class="fas fa-clock"></i></div><div><h3 class="text-xl font-bold text-sweet-dark mb-2">Daya Tahan Produk Unggul</h3><p class="text-gray-600">Brownies tetap lembap (fudgy) meminimalisir risiko terbuang (food waste).</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kemitraan" class="py-24 bg-sweet-dark text-white">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="text-center mb-16 fade-in-up">
+                <span class="text-sweet-gold font-semibold tracking-wider uppercase text-sm mb-2 block">Skema Kerja Sama</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Solusi Fleksibel untuk Bisnis Anda</h2>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="fade-in-up">
+                    <div class="space-y-6">
+                        <div class="bg-sweet-brown/40 p-6 rounded-2xl border border-white/10"><h4 class="text-xl font-bold mb-2 text-white">1. Beli Putus (Wholesale)</h4><p class="text-gray-300 text-sm">Disarankan untuk kafe dengan traffic tinggi yang ingin margin utuh.</p></div>
+                        <div class="bg-sweet-brown/40 p-6 rounded-2xl border border-white/10"><h4 class="text-xl font-bold mb-2 text-white">2. Konsinyasi (Titip Jual)</h4><p class="text-gray-300 text-sm">Membayar produk yang laku dengan bagi hasil. (Syarat & Ketentuan berlaku).</p></div>
+                        <div class="bg-sweet-brown/40 p-6 rounded-2xl border border-white/10"><h4 class="text-xl font-bold mb-2 text-white">3. Pre-Order (PO) Acara</h4><p class="text-gray-300 text-sm">Kebutuhan jumlah besar untuk event kafe atau pertemuan.</p></div>
+                    </div>
+                </div>
+                <div class="fade-in-up delay-100 flex flex-col justify-between">
+                    <div class="bg-white text-sweet-dark p-8 rounded-2xl shadow-xl relative overflow-hidden">
+                        <div class="relative z-10">
+                            <p class="text-gray-700 mb-6 font-medium">Struktur harga B2B kami dirancang jauh lebih menguntungkan dibanding harga ritel.</p>
+                            <div class="bg-sweet-cream p-5 rounded-xl border border-sweet-gold/30">
+                                <p class="text-sm text-sweet-dark font-medium mb-4 text-center">Dapatkan daftar Harga Grosir & Minimum Order (MOQ) lengkap kami.</p>
+                                <a href="https://wa.me/6282358908771" target="_blank" class="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition shadow-md">
+                                    <i class="fab fa-whatsapp text-xl"></i> Konsultasi Harga via WA
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ulasan" class="py-24 bg-sweet-cream relative">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-serif font-bold text-sweet-dark mb-4 fade-in-up">Apa Kata Mereka Tentang Kami?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+                <div class="bg-white p-8 rounded-2xl shadow-lg text-left fade-in-up">
+                    <div class="flex text-sweet-gold mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-gray-700 mb-6 italic">"Konsistensi rasa sangat penting. Teksturnya fudgy dan pas banget buat dipairing sama signature latte kami."</p>
+                    <h4 class="font-bold text-sweet-dark font-serif text-lg">Edra Desmonda</h4><p class="text-xs text-sweet-gold uppercase tracking-wider">Owner Coffee Shop</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg text-left fade-in-up delay-100">
+                    <div class="flex text-sweet-gold mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-gray-700 mb-6 italic">"Varian Brownies Bites-nya super praktis, cokelatnya kerasa premium, lumer di mulut dan bikin mood naik."</p>
+                    <h4 class="font-bold text-sweet-dark font-serif text-lg">Nadine Aurelia</h4><p class="text-xs text-gray-500 uppercase tracking-wider">Mahasiswa / Pembeli</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-sweet-dark border-t border-sweet-brown py-12 text-center text-gray-400">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Social Media & Contact Links -->
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-8">
+                <a href="https://www.instagram.com/sweetellasweeties/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-sweet-gold transition duration-300">
+                    <i class="fab fa-instagram text-2xl"></i>
+                    <span class="font-medium">@sweetellasweeties</span>
+                </a>
+                <div class="hidden md:block w-1.5 h-1.5 bg-gray-600 rounded-full"></div>
+                <a href="https://wa.me/6282358908771" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-sweet-gold transition duration-300">
+                    <i class="fab fa-whatsapp text-2xl"></i>
+                    <span class="font-medium">082358908771</span>
+                </a>
+            </div>
+
+            <!-- Brand Section -->
+            <div class="mb-8">
+                <p class="text-white font-serif text-2xl mb-2 tracking-wide">
+                    Sweetella<span class="text-sweet-gold">Sweeties</span>
+                </p>
+                <p class="text-sm max-w-md mx-auto">Mitra B2B Pastry Terpercaya untuk Bisnis Kopi Anda.</p>
+            </div>
+            
+            <!-- Copyright & Credit -->
+            <div class="border-t border-sweet-brown/50 pt-6 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+                <p>&copy; 2026 Sweetella Sweeties. All rights reserved.</p>
+                <p>
+                    Built by 
+                    <a href="https://solusilokal.id" target="_blank" rel="noopener noreferrer" class="text-sweet-gold hover:text-white font-bold transition duration-300">
+                        SolusiLokal.ID
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/6282358908771" target="_blank" rel="noopener noreferrer" class="floating-wa-btn" aria-label="Hubungi kami di WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span>+62 82358908771</span>
+    </a>
+
+    <script>
+        // Mobile menu toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('appear');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+        // Slider Logic
+        function updateSlider(container) {
+            const wrapper = container.querySelector('.slider-wrapper');
+            const index = parseInt(container.getAttribute('data-slide-index')) || 0;
+            wrapper.style.transform = `translateX(-${index * 100}%)`;
+        }
+        function moveSlide(btn, direction) {
+            const container = btn.closest('.slider-container');
+            const slides = container.querySelectorAll('.slider-slide');
+            let currentIndex = parseInt(container.getAttribute('data-slide-index')) || 0;
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = slides.length - 1;
+            if (currentIndex >= slides.length) currentIndex = 0;
+            container.setAttribute('data-slide-index', currentIndex);
+            updateSlider(container);
+        }
+    </script>
+</body>
+</html>
